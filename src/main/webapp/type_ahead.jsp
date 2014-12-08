@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>TypeAhead testing</title>
-        <link href="resources/css/bootstrap.min.css" rel="stylesheet"/>
+        <!--<link href="resources/css/bootstrap.min.css" rel="stylesheet"/>-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>        
         <script src="resources/js/bootstrap.min.js"></script>
         <script src="resources/js/typeahead.bundle.min.js"></script>
@@ -18,7 +18,7 @@
     </head>
     <body>
 <style type="text/css">
-.bs-container{
+.bs-example{
 	font-family: sans-serif;
 	position: relative;
 	margin: 100px;
@@ -39,7 +39,7 @@
 .typeahead:focus {
 	border: 2px solid #0097CF;
 }
-.tt-query {
+.tt-input {
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
 }
 .tt-hint {
@@ -59,17 +59,16 @@
 	line-height: 24px;
 	padding: 3px 20px;
 }
-.tt-suggestion.tt-is-under-cursor {
+.tt-suggestion.tt-cursor {
 	background-color: #0097CF;
 	color: #FFFFFF;
 }
 .tt-suggestion p {
 	margin: 0;
-    
 }
 </style>
-<div class="bs-container ">
-<input type="text" id="script_name" name="script_name" class="typeahead tt-query" placeholder="введите имя" autocomplete="off" spellcheck="false"/>
+<div class="bs-example" id="in-container">
+<input type="text" class="typeahead" placeholder="введите имя" autocomplete="off" spellcheck="false"/>
 </div>
 
 <script type="text/javascript">
@@ -99,23 +98,43 @@ var substringMatcher = function(strs) {
 
 var words = ["amazone","amazing","bomb","beache"];
 
-    $(document).ready(function(){
-//        console.log("typeahead is creating...");
-//         $('#script_name').typeahead({
-//           name: 'script_names',
-//           local : ["victim","vaio"]
-//         });
-$('#script_name').typeahead({
-  hint: true,
-  highlight: true,
-  minLength: 1
-},
-{
-  name: 'words',
-  displayKey: 'value',
-  source: substringMatcher(words)
+var mySource = new Bloodhound({
+  datumTokenizer: function(d) { 
+    return Bloodhound.tokenizers.whitespace(d.value); 
+  },
+  queryTokenizer: Bloodhound.tokenizers.whitespace,
+//  local: [{word:"victim"},{word:"vaio"}]
+    prefetch : {
+        url : "resources/js/existing-names.js",
+        filter : function(list){
+            return $.map(list,function(word){return {value:word};});
+        }
+    }
 });
-     });
+mySource.initialize();
+
+    $(document).ready(function(){
+        console.log("typeahead is creating...");
+         $('#in-container .typeahead').typeahead({
+             hint : true,
+             highlight:true
+         },
+         {
+           displayKey: 'value',
+           source : mySource.ttAdapter()
+         });
+    });
+
+//$('#script_name').typeahead({
+//  hint: true,
+//  highlight: true
+//},
+//{
+//  name: 'words',
+//  displayKey: 'value',
+//  source: substringMatcher(words)
+//});
+//     });
 </script>
     </body>
 </html>
