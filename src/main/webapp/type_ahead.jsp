@@ -72,38 +72,11 @@
 </div>
 
 <script type="text/javascript">
-var substringMatcher = function(strs) {
-  return function findMatches(q, cb) {
-    var matches, substrRegex;
- 
-    // an array that will be populated with substring matches
-    matches = [];
- 
-    // regex used to determine if a string contains the substring `q`
-    substrRegex = new RegExp(q, 'i');
- 
-    // iterate through the pool of strings and for any string that
-    // contains the substring `q`, add it to the `matches` array
-    $.each(strs, function(i, str) {
-      if (substrRegex.test(str)) {
-        // the typeahead jQuery plugin expects suggestions to a
-        // JavaScript object, refer to typeahead docs for more info
-        matches.push({ value: str });
-      }
-    });
- 
-    cb(matches);
-  };
-};
-
-var words = ["amazone","amazing","bomb","beache"];
-
 var mySource = new Bloodhound({
   datumTokenizer: function(d) { 
     return Bloodhound.tokenizers.whitespace(d.value); 
   },
   queryTokenizer: Bloodhound.tokenizers.whitespace,
-//  local: [{word:"victim"},{word:"vaio"}]
     prefetch : {
         url : "resources/js/existing-names.js",
         filter : function(list){
@@ -124,17 +97,6 @@ mySource.initialize();
            source : mySource.ttAdapter()
          });
     });
-
-//$('#script_name').typeahead({
-//  hint: true,
-//  highlight: true
-//},
-//{
-//  name: 'words',
-//  displayKey: 'value',
-//  source: substringMatcher(words)
-//});
-//     });
 </script>
     </body>
 </html>
