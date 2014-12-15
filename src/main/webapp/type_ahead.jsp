@@ -68,7 +68,7 @@
 }
 </style>
 <div class="bs-example" id="in-container">
-<input type="text" class="typeahead" placeholder="введите имя" autocomplete="off" spellcheck="false"/>
+    <input type="text" class="typeahead" placeholder="введите имя" autocomplete="off" spellcheck="false" id="name"/>
 </div>
 
 <script type="text/javascript">
@@ -87,14 +87,38 @@ var mySource = new Bloodhound({
 mySource.initialize();
 
     $(document).ready(function(){
+        
         console.log("typeahead is creating...");
          $('#in-container .typeahead').typeahead({
              hint : true,
              highlight:true
          },
          {
+           name: 'words',
            displayKey: 'value',
            source : mySource.ttAdapter()
+         })
+         .on('typeahead:autocompleted', function($e,datum){
+             console.log('autocompleted');
+         })
+         .on('typeahead:selected', function($e,datum){
+             console.log('selected');
+             console.log(datum);
+             $("#name").addClass("has-error");
+         });
+         $("#name").bind("blur",function(){
+             console.log(JSON.stringify(mySource.index.datums));
+             var isExisting = false;
+             $.each(mySource.index.datums,function(key,value){
+                if ($("#name").typeahead('val')===value["value"]){
+                    isExisting = true;
+                }
+                });
+                if (isExisting === true){
+                    $("#in-container").addClass("has-error");
+                }else{
+                    $("#in-container").removeClass("has-error");
+                }
          });
     });
 </script>
