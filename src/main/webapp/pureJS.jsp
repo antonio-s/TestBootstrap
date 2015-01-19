@@ -67,26 +67,107 @@
                 return newLabel;
             }
         });
-        var container = $("#title-container").componentGenerator({title : ""});
-        var title = $("<label>").appendTo(container).componentGenerator({
-            showSeconds : function(event,data){
-                container.componentGenerator("label",new Date().getSeconds()).css("color","green");
-            }}).bind("componentGeneratorcomplete",function(event,data){
-                console.log("!!! binded event after creating the object");
-            });
-//                .data("custom-componentGenerator");
-        $("#my-button").click(function(){
-            console.log("click");
-            title.componentGenerator("option","value",new Date());
-//            alert(title.option("title"));
-//            title.option("value",new Date());
-//            container.componentGenerator("label",new Date().getSeconds()).css("color","green");
+//        var container = $("#title-container").componentGenerator({title : ""});
+//        var title = $("<label>").appendTo(container).componentGenerator({
+//            showSeconds : function(event,data){
+//                container.componentGenerator("label",new Date().getSeconds()).css("color","green");
+//            }})
+////                .data("custom-componentGenerator");
+//        $("#my-button").click(function(){
+//            console.log("click");
+//            title.componentGenerator("option","value",new Date());
+//        });
+    });
+    
+    $(document).ready(function(){
+        $.widget("custom.dynamicComponentContainer",{
+            options : {
+                container : null,
+                baseName : null,
+                componentGenerator : {
+                    createComponent : function(){
+                        return this._defaultComponent();
+                    }
+                }
+                
+            },
+            _defaultComponent : function(){
+                return $("<span>")
+                        .append($("<label>").text("тестовый текст")
+                        );
+            },
+            _create : function(){
+                var container = $("<div>");
+                this.options.container = container;
+                this.element.append(container);
+                var button = $("<button>").addClass("btn btn-success btn-sm").append($("<i>").addClass("fa fa-plus-circle"));
+                var obj = this;
+                button.click(function(event){
+                   obj.addComponent();
+                });
+                this.element.append(button);
+            },
+            addComponent : function(){
+                if (this.options.componentGenerator === null){
+                    console.log("componentGenerator should be initialized before using!");
+                    return this;
+                }
+                var slot = $("<div>");
+                var component = $("<span>").append(this.options.componentGenerator.createComponent());
+                var minusButton = $("<span>");
+                this.options.container.append(slot);
+                slot
+                    .append(component)
+                    .append(
+                        minusButton
+                            .append($("<button>")
+                                .addClass("btn btn-xs btn-danger")
+                                .append($("<i>").addClass("fa fa-minus"))
+                                .click(function(event){
+                                    slot.remove();
+                                })
+                                ));
+                
+                return this;
+            }
+        });
+        
+        $.widget("custom.componentFactory",{
+            options : {
+                tagName : null,
+                index : 0
+            },
+            label : function(text){
+                console.log("label....");
+                var label = $("<span>").addClass("label label-info");
+                label.text(text);
+                return label;
+            },
+            ftpInput : function(nameSuffix){
+//                this.options.index = this.options.index + 1;
+                return $("<input>").attr("type","input").attr("name",this.options.tagName+nameSuffix);
+            }
+        });
+        
+        var factory = $("#dynamic-container").componentFactory({tagName:"extra_ftp"});
+        $("#dynamic-container").dynamicComponentContainer({componentGenerator:{
+                createComponent : function(){
+                    var index = factory.componentFactory("option","index");
+                    index += 1;
+                    factory.componentFactory("option","index",index);
+//                    return factory.componentFactory("label","это уже "+factory.componentFactory("option","index")+"-я метка");
+                    return factory.componentFactory("ftpInput",index);
+                }
+            }
         });
     });
 </script>
-<div>
-    <button id="my-button" type="button" class="btn btn-success"><i class="fa fa-plus-circle"></i></button>
+<!--<div>
+    <button id="my-button" type="button" class="btn btn-success btn-xs btn-circle-xs"><i class="fa fa-plus-circle"></i></button>
     <div id="title-container"></div>
+    
+</div>-->
+<div id="dynamic-container" class="">
     
 </div>
             <script src="resources/js/bootstrap.min.js"></script>
