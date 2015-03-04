@@ -17,6 +17,7 @@
             $("#myButton").on("click",function(e){
                 alert("OK");
             });
+            alert('5'-'4');
         </script>
     </body>
 </html>
