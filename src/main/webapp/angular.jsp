@@ -18,9 +18,8 @@
     </head>
     <body ng-controller="ShowNamesController">
         <h1 class="text-success">Simple application</h1>
-        <div>{{names}}</div>
         <li ng-repeat="name in names">
-            <div class="col-lg-1">Имя : </div>
+            <!--<div class="">Имя : </div>-->
             <label class="label label-primary">{{name}}</label>
         </li>
     </body>
