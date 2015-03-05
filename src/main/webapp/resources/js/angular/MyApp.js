@@ -4,8 +4,7 @@
  * and open the template in the editor.
  */
 var myApp = angular.module('MyApp',[]); 
-function ShowNamesController($scope){
+
+myApp.controller("ShowNamesController",["$scope",function($scope){
     $scope.names = ["Anton","Ann","Max","Natali"];
-}
-ShowNamesController.$inject = ["$scope"];
-myApp.controller("ShowNamesController",ShowNamesController);
+}]);
