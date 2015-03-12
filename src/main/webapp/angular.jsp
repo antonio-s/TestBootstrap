@@ -73,7 +73,7 @@
                 <input type="checkbox" ng-model="checked" > Is Visible...
             </label>
             <li ng-init="name=names[0]" class="sample-show-hide" ng-show="checked">
-                <div my-draggable>Имя : </div>
+                <my-directive ng-attr-reset="!checked">Имя : </my-directive>
                 <!--<label class="label label-info" ng-mouseup="checked=true" style="cursor: pointer">{{name}}</label>-->
             </li>
         </div>
