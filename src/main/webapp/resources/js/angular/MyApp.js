@@ -11,6 +11,17 @@ myApp.controller("ShowNamesController",["$scope",function($scope){
 //    $scope.firstName = function(){
 //        return $scope.names[0];
 //    }
+    $scope.logOut = function(){
+        console.log($scope);
+    }
+    $scope.$watch("checked",function(newValue,oldValue){
+        console.log("newValue = "+newValue+" ; oldValue = "+oldValue);
+        console.log($scope);
+        if (oldValue === false && newValue === true){
+            $scope.pos_x = 0;
+            $scope.pos_y = 0;
+        }
+    })
 }]);
 
 myApp.controller("ShowFullNameController",["$scope",function($scope){
@@ -33,6 +44,8 @@ myApp.directive("myDirective",function(){
             element.addClass("alert alert-success");
             return '<label class="label label-default"  my-draggable  ng-mousemove="firstName=defaultName+ \' - \'+ pos_x">{{firstName}}</label>'
 //                +'<br/>x = {{pos_x}}  y = {{pos_y}}</label>';
+        },
+        link : function(scope,element,attrs){
         }
                 //'<label class="label label-default">{{name}}</label>'
     };
@@ -40,7 +53,6 @@ myApp.directive("myDirective",function(){
 
 myApp.directive('myDraggable', ['$document', function($document) {
   return {
-      require : "?ngModel",
       restrict : 'A',
       link : function(scope, element, attr) {
                 scope.defaultName = scope.firstName;

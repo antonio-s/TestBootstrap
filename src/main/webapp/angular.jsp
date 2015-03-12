@@ -70,10 +70,10 @@
         <h1 class="text-success">Simple application</h1>
         <div ng-init="checked=true">
             <label>
-                <input type="checkbox" ng-model="checked" > Is Visible...
+                <input type="checkbox" ng-model="checked"> Is Visible...
             </label>
-            <li ng-init="name=names[0]" class="sample-show-hide" ng-show="checked">
-                <my-directive ng-attr-reset="!checked">Имя : </my-directive>
+            <li ng-init="name=names[0]" class="sample-show-hide">
+                <my-directive ng-attr-reset="{{checked}}">Имя : </my-directive>
                 <!--<label class="label label-info" ng-mouseup="checked=true" style="cursor: pointer">{{name}}</label>-->
             </li>
         </div>
