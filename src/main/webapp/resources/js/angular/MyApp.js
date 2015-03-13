@@ -3,6 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+function TypeContainer(code){
+    this.code = code;
+    this.printState = function(){
+        console.log("TypeContainer.....");
+    };
+}
+var Types = new TypeContainer();
+TypeContainer.prototype.CHART = new TypeContainer("chart");
+TypeContainer.prototype.TABLE = new TypeContainer("table");
+
+var type = Types.CHART.getCode();
+
+var ChildTypeContainer = new TypeContainer();
+
+ChildTypeContainer.prototype.printState = function(){
+    console.log("ChildTypeContainer....");
+};
+
+var child = new ChildTypeContainer();
+var parent = new TypeContainer();
+parent.printState();
+child.printState();
+
 var myApp = angular.module('MyApp',["ngAnimate"]); 
 
 myApp.controller("ShowNamesController",["$scope",function($scope){
@@ -23,6 +46,7 @@ myApp.controller("ShowNamesController",["$scope",function($scope){
         }
     })
 }]);
+myApp.
 
 myApp.controller("ShowFullNameController",["$scope",function($scope){
     $scope.firstName = "Anton";
