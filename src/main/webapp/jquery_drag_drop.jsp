@@ -15,7 +15,7 @@
         <title>JSP Page</title>
         <style type="text/css">
             .drop-enabled{
-                border: 1px solid green;
+                border: 1px solid yellow;
             }
             .drop-disabled{
                 border: 1px solid red;
@@ -27,12 +27,19 @@
             $(document).ready(function(){
                 $(".draggable").draggable({
                     iframeFix:true,
-                    snap : true,
+                    snap : "#droppable-container",
                     snapTolerance : 10,
                     snapMode : "inner",
                     stack : "label",
                     zIndex : 0,
-                    containment : "#draggable-container"
+                    revert : true,
+                    stop : function(event,ui){
+                        console.log(event);
+                        console.log(ui);
+                        
+//                        ui.draggable.removeClass("drop-enabled").removeClass("drop-disabled");
+                    }
+//                    containment : "#droppable-container"
                 });
                 $(".draggable").draggable("option","cursor","pointer");
                 
@@ -40,6 +47,7 @@
                    accept : ".label",
                    tolerance : "fit",
                    out : function(event,ui){
+                       ui.draggable.draggable('option','revert',true);
                        ui.draggable.addClass("drop-disabled");
                    },
                    over : function(event,ui){
@@ -48,8 +56,15 @@
                    activate : function(event,ui){
                        console.log(ui);
                        ui.draggable.addClass("drop-enabled");
+                   },
+                   drop : function(event,ui){
+                       ui.draggable.removeClass("drop-enabled").removeClass("drop-disabled");
+                           ui.draggable.draggable('option','revert',false);
+                           ui.draggable.css({
+                               left : ui.position.left,
+                               top : ui.position.top
+                           });
                    }
-                   
                 });
             });
             
