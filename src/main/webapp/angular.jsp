@@ -65,24 +65,19 @@
   </div>
 </div>
 </body>-->
-    <body ng-app="MyApp">
+    <body ng-app="DashBoard">
         <div ng-controller="ShowNamesController">
         <h1 class="text-success">Simple application</h1>
         <div ng-init="checked=true">
+            <label class="label label-default">{{firstName}}</label><br/>
             <label>
                 <input type="checkbox" ng-model="checked"> Is Visible...
             </label>
             <li ng-init="name=names[0]" class="sample-show-hide">
-                <my-directive ng-attr-reset="{{checked}}">Имя : </my-directive>
+                <my-directive ng-attr-reset="{{checked}}" first-name="firstName">Имя : </my-directive>
                 <!--<label class="label label-info" ng-mouseup="checked=true" style="cursor: pointer">{{name}}</label>-->
             </li>
         </div>
        </div>
-        <div ng-controller="ShowFullNameController">
-            <label class="label label-success">{{firstName}} {{lastName}}</label>
-            <div ng-controller="ChildFullNameController">
-                <label class="label label-danger">{{firstName}} {{lastName}}</label>
-            </div>
-        </div>
     </body>
 </html>

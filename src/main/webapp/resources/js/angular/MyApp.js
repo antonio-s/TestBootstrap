@@ -3,59 +3,71 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var myApp = angular.module('MyApp',["ngAnimate"]); 
+var dashBoard = angular.module('DashBoard',["ngAnimate"]); 
 
-myApp.controller("ShowNamesController",["$scope",function($scope){
+dashBoard.controller("ShowNamesController",["$scope",function($scope){
     $scope.names = ["Anton","Ann","Max","Natali"];
     $scope.firstName = $scope.names[0];
 //    $scope.firstName = function(){
 //        return $scope.names[0];
 //    }
     $scope.logOut = function(){
-        console.log($scope);
+//        console.log($scope);
     }
     $scope.$watch("checked",function(newValue,oldValue){
         console.log("newValue = "+newValue+" ; oldValue = "+oldValue);
-        console.log($scope);
+//        console.log($scope);
         if (oldValue === false && newValue === true){
             $scope.pos_x = 0;
             $scope.pos_y = 0;
         }
     })
 }]);
-myApp.
 
-myApp.controller("ShowFullNameController",["$scope",function($scope){
+dashBoard.controller("ShowFullNameController",["$scope",function($scope){
     $scope.firstName = "Anton";
     $scope.lastName = "Seredenko";
 }]);
-myApp.controller("ChildFullNameController",["$scope",function($scope){
+dashBoard.controller("ChildFullNameController",["$scope",function($scope){
     $scope.firstName = "Ann";
 }]);
 
 
-myApp.directive("myDirective",function(){
+dashBoard.directive("myDirective",function(){
     return {
 //        transclude : "element",
 //        scope : {
 //            localName : '@myAttr'
 //        },
+        scope : {firstName : "=firstName"},
         restrict : 'E',
         template : function(element,attrs){
             element.addClass("alert alert-success");
-            return '<label class="label label-default"  my-draggable  ng-mousemove="firstName=defaultName+ \' - \'+ pos_x">{{firstName}}</label>'
+            return '<label class="label label-default"  my-draggable>{{firstName}}</label>'
 //                +'<br/>x = {{pos_x}}  y = {{pos_y}}</label>';
         },
         link : function(scope,element,attrs){
+            console.log("linking myDrirective....");
+            console.log(scope);
+            console.log("attrs :");
+            console.log(attrs);
         }
                 //'<label class="label label-default">{{name}}</label>'
     };
 });
 
-myApp.directive('myDraggable', ['$document', function($document) {
+
+//var MydraggableDirective = function($document){
+//    this.restrict = "A";
+//    this.refreshCoor
+//}
+
+dashBoard.directive('myDraggable', ['$document', function($document) {
   return {
       restrict : 'A',
+//      scope : {pos_x : "@pos_x"},
       link : function(scope, element, attr) {
+            console.log("drag directive is linking.........");
                 scope.defaultName = scope.firstName;
                 var startX = 0, startY = 0, x = 0, y = 0;
             //    alert(scope);
@@ -67,6 +79,11 @@ myApp.directive('myDraggable', ['$document', function($document) {
             //     backgroundColor: 'lightgrey',
                  cursor: 'pointer'
                 });
+                
+                scope.refreshName = function(){
+                    console.log(scope);
+                    scope.firstName = scope.defaultName+" - "+scope.pos_x;
+                };
 
                 element.on('mousedown', function(event) {
                   // Prevent default dragging of selected content
@@ -76,16 +93,35 @@ myApp.directive('myDraggable', ['$document', function($document) {
                   $document.on('mousemove', mousemove);
                   $document.on('mouseup', mouseup);
                 });
+                console.log(this);
+                element.on('dblclick',resetPosition);
+                
+                function refreshName(){
+                    scope.firstName = scope.defaultName+" - "+scope.pos_x;
+                } 
+                function resetPosition(){
+                    x = 0;
+                    y = 0;
+                    scope.pos_x = 0;
+                    scope.pos_y = 0;
+                    refreshCoordinates(element,0,0);
+                }
+                function refreshCoordinates(element,x,y){
+                      element.css({
+                        top: y + 'px',
+                        left:  x + 'px'
+                      });
+                      refreshName();
+                      scope.$apply();
+                }
+                
 
                 function mousemove(event) {
                   y = event.pageY - startY;
                   x = event.pageX - startX;
                   scope.pos_x = x;
                   scope.pos_y = y;
-                  element.css({
-                    top: y + 'px',
-                    left:  x + 'px'
-                  });
+                  refreshCoordinates(element,x,y);
 //                  scope.$apply(function(){
 //                    scope.firstName = defaultName + " - x = "+ x +" y = "+ y;
 //                  });
