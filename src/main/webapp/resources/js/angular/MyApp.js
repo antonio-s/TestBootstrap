@@ -3,46 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-function TypeContainer(code){
-    console.log("TypeContainer.constructor.......");
-    this.code = code;
-    this.addCounter = 0;
-    this.printState = function(){
-        console.log(this.constructor+".....");
-    };
-    
-    this.getCode = function(){
-        return this.code;
-    }
-    
-    this.allowAdding = function(object){
-        console.log("checkking : "+object.getCode()==="chart");
-        if (child instanceof ChildTypeContainer && object.getCode()==="chart"){
-            this.addCounter++;
-            return true;
-        }
-        return false;
-    }
-}
-var Types = new TypeContainer();
-TypeContainer.prototype.CHART = new TypeContainer("chart");
-TypeContainer.prototype.TABLE = new TypeContainer("table");
-
-var type = Types.CHART.getCode();
-
-ChildTypeContainer.prototype = new TypeContainer();
-ChildTypeContainer.prototype.constructor = ChildTypeContainer;
-function ChildTypeContainer(code){
-    this.code = code;
-}
-
-var child = new ChildTypeContainer("chart");
-console.log("code => "+child.getCode()+"...."+child.code);
-var parent = new TypeContainer();
-
-console.log("is allowed "+parent.allowAdding(child));
-
-
 var myApp = angular.module('MyApp',["ngAnimate"]); 
 
 myApp.controller("ShowNamesController",["$scope",function($scope){
