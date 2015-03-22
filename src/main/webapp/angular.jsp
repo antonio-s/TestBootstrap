@@ -16,6 +16,7 @@
         <script src="resources/js/angular/angular.js"></script>
         <script src="resources/js/angular/angular-animate.js"></script>
         <script src="resources/js/angular/MyApp.js"></script>
+        <script src="resources/js/angular/MyScopesApp.js"></script>
         <style type="text/css">
 .sample-show-hide {
   padding:10px;
@@ -65,7 +66,7 @@
   </div>
 </div>
 </body>-->
-    <body ng-app="DashBoard">
+<!--    <body ng-app="DashBoard">
         <div ng-controller="ShowNamesController">
         <h1 class="text-success">Simple application</h1>
         <div ng-init="checked=true">
@@ -75,9 +76,22 @@
             </label>
             <li ng-init="name=names[0]" class="sample-show-hide">
                 <my-directive ng-attr-reset="{{checked}}" first-name="firstName">Имя : </my-directive>
-                <!--<label class="label label-info" ng-mouseup="checked=true" style="cursor: pointer">{{name}}</label>-->
+                <label class="label label-info" ng-mouseup="checked=true" style="cursor: pointer">{{name}}</label>
             </li>
         </div>
        </div>
-    </body>
+    </body>-->
+
+<body ng-app="scopesApp">
+    <div ng-controller="nameController">
+        <div ng-controller="specificNameController" ng-init="name='Anton'">
+            <div ng-controller="specificNameController" ng-init="name='Ann'">
+                <div class="alert alert-info" ng-controller="greetingController" >
+                    {{showFormalGreeting()}}
+                    <button ng-click="addOneToUrl()" >show location</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
